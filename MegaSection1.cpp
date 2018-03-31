@@ -11,6 +11,7 @@
 #include "Tools.h"
 #include "CfgBas.h"
 
+
 // CMegaSection1 对话框
 // 本对话框在修改直径（diameter of the section  Dex），
 //  纵向钢筋根数（longitunal bar:Number  of bars）和
