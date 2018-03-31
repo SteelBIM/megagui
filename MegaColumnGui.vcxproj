@@ -1,0 +1,278 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{04A92912-ADD4-4921-9B29-AFD8DA61AD11}</ProjectGuid>
+    <SccProjectName>
+    </SccProjectName>
+    <SccAuxPath>
+    </SccAuxPath>
+    <SccLocalPath>
+    </SccLocalPath>
+    <SccProvider>
+    </SccProvider>
+    <RootNamespace>MegaColumnGui</RootNamespace>
+    <Keyword>MFCDLLProj</Keyword>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>true</UseDebugLibraries>
+    <CharacterSet>MultiByte</CharacterSet>
+    <UseOfMfc>Static</UseOfMfc>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <UseDebugLibraries>false</UseDebugLibraries>
+    <WholeProgramOptimization>true</WholeProgramOptimization>
+    <CharacterSet>MultiByte</CharacterSet>
+    <UseOfMfc>Static</UseOfMfc>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets" Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <LinkIncremental>true</LinkIncremental>
+    <IncludePath>$(SolutionDir)..\Depends\Inc\STS_Inc;$(SolutionDir)..\Depends\Inc\Lib6N_Inc;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;$(SolutionDir)..\Gsec_MegaColumn\GenSecDsn;$(SolutionDir)..\Gsec_MegaColumn\_Depend\COMMON\Inc</IncludePath>
+    <LibraryPath>$(SolutionDir)..\WIN32_MAIN_2017_08_18;$(SolutionDir)..\out\$(Platform);$(SolutionDir)..\Depends\Lib\STSLib\$(Platform);$(SolutionDir)..\Depends\Lib\Lib6N\$(Platform);$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSdkDir)lib;$(FrameworkSDKDir)\lib</LibraryPath>
+    <OutDir>$(SolutionDir)..\WIN32_MAIN_2017_08_18</OutDir>
+    <TargetName>megacolumnd</TargetName>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <LinkIncremental>false</LinkIncremental>
+    <IncludePath>$(SolutionDir)..\Depends\Inc\STS_Inc;$(SolutionDir)..\Depends\Inc\Lib6N_Inc;$(VCInstallDir)include;$(VCInstallDir)atlmfc\include;$(WindowsSdkDir)include;$(FrameworkSDKDir)\include;$(SolutionDir)..\Gsec_MegaColumn\GenSecDsn;$(SolutionDir)..\Gsec_MegaColumn\_Depend\COMMON\Inc</IncludePath>
+    <LibraryPath>$(SolutionDir)..\WIN32_MAIN_2017_08_18;$(SolutionDir)..\out\$(Platform);$(SolutionDir)..\Depends\Lib\STSLib\$(Platform);$(SolutionDir)..\Depends\Lib\Lib6N\$(Platform);$(VCInstallDir)lib;$(VCInstallDir)atlmfc\lib;$(WindowsSdkDir)lib;$(FrameworkSDKDir)\lib</LibraryPath>
+    <OutDir>$(SolutionDir)..\WIN32_MAIN_2017_08_18\</OutDir>
+    <TargetName>megaColumn</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <WarningLevel>Level3</WarningLevel>
+      <Optimization>Disabled</Optimization>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\megasectcal;$(SolutionDir)..\Gsec_MegaColumn\GenSecDsn;$(SolutionDir)..\Depends\Inc\STS_Inc;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ModuleDefinitionFile>.\MegaColumnGui.def</ModuleDefinitionFile>
+      <AdditionalLibraryDirectories>$(IFORT_COMPILER12)\compiler\lib\ia32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>/verbose:lib %(AdditionalOptions)</AdditionalOptions>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0804</Culture>
+      <PreprocessorDefinitions>_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <WarningLevel>Level3</WarningLevel>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <Optimization>MaxSpeed</Optimization>
+      <FunctionLevelLinking>true</FunctionLevelLinking>
+      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;_USRDLL;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link>
+      <SubSystem>Windows</SubSystem>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <EnableCOMDATFolding>true</EnableCOMDATFolding>
+      <OptimizeReferences>true</OptimizeReferences>
+      <ModuleDefinitionFile>.\MegaColumnGui.def</ModuleDefinitionFile>
+      <AdditionalOptions>/verbose:lib %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalLibraryDirectories>D:\GSECTD\Gsec_MegaColumn\_runtime\Win32\Release\pm;$(IFORT_COMPILER12)\compiler\lib\ia32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+    </Link>
+    <Midl>
+      <MkTypLibCompatible>false</MkTypLibCompatible>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </Midl>
+    <ResourceCompile>
+      <Culture>0x0804</Culture>
+      <PreprocessorDefinitions>NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(IntDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <None Include="MegaColumnGui.def" />
+    <None Include="ReadMe.txt" />
+    <None Include="res\6array.bmp" />
+    <None Include="res\6spin.bmp" />
+    <None Include="res\bengou.bmp" />
+    <None Include="res\bitmap3.bmp" />
+    <None Include="res\bitmap4.bmp" />
+    <None Include="res\bitmap5.bmp" />
+    <None Include="res\bmp00001.bmp" />
+    <None Include="res\bmp00002.bmp" />
+    <None Include="res\bmp00003.bmp" />
+    <None Include="res\bmp00004.bmp" />
+    <None Include="res\bmp00005.bmp" />
+    <None Include="res\bmp00006.bmp" />
+    <None Include="res\bmp6row1.bmp" />
+    <None Include="res\circlefourpin.bmp" />
+    <None Include="res\circlesingle.bmp" />
+    <None Include="res\conmodel.bmp" />
+    <None Include="res\fourarray.bmp" />
+    <None Include="res\fourspin.bmp" />
+    <None Include="res\icon_H.ico" />
+    <None Include="res\MegaColumnGui.rc2" />
+    <None Include="res\para\c.bmp" />
+    <None Include="res\para\ginf.bmp" />
+    <None Include="res\para\gsup.bmp" />
+    <None Include="res\para\m0.bmp" />
+    <None Include="res\para\m1.bmp" />
+    <None Include="res\para\q.bmp" />
+    <None Include="res\para\s.bmp" />
+    <None Include="res\partial.bmp" />
+    <None Include="res\promodel.bmp" />
+    <None Include="res\sect1.bmp" />
+    <None Include="res\sect2.bmp" />
+    <None Include="res\sect3.bmp" />
+    <None Include="res\sect4.bmp" />
+    <None Include="res\sect5.bmp" />
+    <None Include="res\sect6.bmp" />
+    <None Include="res\sect7.bmp" />
+    <None Include="res\sect8.bmp" />
+    <None Include="res\single.bmp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="CfgFun1.cpp" />
+    <ClCompile Include="CommonUtil.cpp" />
+    <ClCompile Include="ConBenGou.cpp" />
+    <ClCompile Include="ConfigDlg.cpp" />
+    <ClCompile Include="DesignPara.cpp" />
+    <ClCompile Include="DlgLang.cpp" />
+    <ClCompile Include="DlgLoadInput.cpp" />
+    <ClCompile Include="DlgNMVSel.cpp" />
+    <ClCompile Include="DlgSectionList.cpp" />
+    <ClCompile Include="DrawNMCurve.cpp" />
+    <ClCompile Include="DrawSectPic.cpp" />
+    <ClCompile Include="EditTableCell.cpp" />
+    <ClCompile Include="EditTableHeader.cpp" />
+    <ClCompile Include="GlobalPara.cpp" />
+    <ClCompile Include="jsoncpp.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">NotUsing</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">NotUsing</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Libin.cpp" />
+    <ClCompile Include="Loaddef.cpp" />
+    <ClCompile Include="MegaColumnGui.cpp" />
+    <ClCompile Include="MegaCombDlg.cpp" />
+    <ClCompile Include="MegaCros1.cpp" />
+    <ClCompile Include="MegaLoad1.cpp" />
+    <ClCompile Include="MegaMainData.cpp" />
+    <ClCompile Include="MegaSection1.cpp" />
+    <ClCompile Include="MegaSection2.cpp" />
+    <ClCompile Include="MegaSection3.cpp" />
+    <ClCompile Include="MegaSection4.cpp" />
+    <ClCompile Include="MegaSection5.cpp" />
+    <ClCompile Include="MegaSection6.cpp" />
+    <ClCompile Include="MegaSection7.cpp" />
+    <ClCompile Include="MegaSection8.cpp" />
+    <ClCompile Include="MeshGrid.cpp" />
+    <ClCompile Include="ModelSel.cpp" />
+    <ClCompile Include="MsgMacroHeader.cpp" />
+    <ClCompile Include="Newfilename.cpp" />
+    <ClCompile Include="NodeLoad.cpp" />
+    <ClCompile Include="NodeLoad2.cpp" />
+    <ClCompile Include="PluginCmd.cpp" />
+    <ClCompile Include="PluginFun.cpp" />
+    <ClCompile Include="ProBenGou.cpp" />
+    <ClCompile Include="SectCtrl.cpp" />
+    <ClCompile Include="SectionReader.cpp" />
+    <ClCompile Include="SectionSel.cpp" />
+    <ClCompile Include="stdafx.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="Tools.cpp" />
+    <ClCompile Include="Userdefcross.cpp" />
+    <ClCompile Include="WelcomeDlg.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="CfgFun1.h" />
+    <ClInclude Include="CmdManageDef.h" />
+    <ClInclude Include="CommonUtil.h" />
+    <ClInclude Include="ConBenGou.h" />
+    <ClInclude Include="ConfigDlg.h" />
+    <ClInclude Include="DesignPara.h" />
+    <ClInclude Include="DlgLang.h" />
+    <ClInclude Include="DlgLoadInput.h" />
+    <ClInclude Include="DlgNMVSel.h" />
+    <ClInclude Include="DlgSectionList.h" />
+    <ClInclude Include="DrawNMCurve.h" />
+    <ClInclude Include="DrawSectPic.h" />
+    <ClInclude Include="EditTableCell.h" />
+    <ClInclude Include="EditTableHeader.h" />
+    <ClInclude Include="GlobalPara.h" />
+    <ClInclude Include="ICommonInfoOut_C.h" />
+    <ClInclude Include="json\json-forwards.h" />
+    <ClInclude Include="json\json.h" />
+    <ClInclude Include="Loaddef.h" />
+    <ClInclude Include="MegaColumnGui.h" />
+    <ClInclude Include="MegaCombDlg.h" />
+    <ClInclude Include="MegaCros1.h" />
+    <ClInclude Include="MegaLoad1.h" />
+    <ClInclude Include="MegaMainData.h" />
+    <ClInclude Include="MegaSection1.h" />
+    <ClInclude Include="MegaSection2.h" />
+    <ClInclude Include="MegaSection3.h" />
+    <ClInclude Include="MegaSection4.h" />
+    <ClInclude Include="MegaSection5.h" />
+    <ClInclude Include="MegaSection6.h" />
+    <ClInclude Include="MegaSection7.h" />
+    <ClInclude Include="MegaSection8.h" />
+    <ClInclude Include="MeshGrid.h" />
+    <ClInclude Include="ModelSel.h" />
+    <ClInclude Include="MsgMacroHeader.h" />
+    <ClInclude Include="Newfilename.h" />
+    <ClInclude Include="NodeLoad.h" />
+    <ClInclude Include="NodeLoad2.h" />
+    <ClInclude Include="PluginCmd.h" />
+    <ClInclude Include="PluginFun.h" />
+    <ClInclude Include="ProBenGou.h" />
+    <ClInclude Include="Resource.h" />
+    <ClInclude Include="SectCommon.h" />
+    <ClInclude Include="SectCtrl.h" />
+    <ClInclude Include="SectionReader.h" />
+    <ClInclude Include="SectionSel.h" />
+    <ClInclude Include="stdafx.h" />
+    <ClInclude Include="STEELLIB.H" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="Tools.h" />
+    <ClInclude Include="Userdefcross.h" />
+    <ClInclude Include="WelcomeDlg.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="MegaColumnGui.rc" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="MegaColumnGui.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>

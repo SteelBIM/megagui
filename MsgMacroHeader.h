@@ -1,0 +1,14 @@
+#include "stdafx.h"
+
+#ifndef MSG_MACRO_HEADER
+#define MSG_MACRO_HEADER
+#define EDITMSG_CHANGED		WM_USER+100
+#define EDITMSG_SELECTED	WM_USER+110
+#define EDITINDEXMSG_SELECTED	WM_USER+111
+#endif
+
+#ifndef LOADDLG_NUMBER_NULL 
+#define LOADDLG_NUMBER_NULL -9999999
+#endif
+
+//extern const CString COMMONINFO_CMD_SHOW_STS_TREE;
