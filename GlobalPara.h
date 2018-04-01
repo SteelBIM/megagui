@@ -34,6 +34,7 @@ public:
 public:
 	static DesnPara m_DesnPara;
 	static SectDescribe m_Sect_in;
+	static membercheck_rst m_Rst;
 	static void initPara(int CodeType);
 	static void initbengou();
 	static bool SavePara();

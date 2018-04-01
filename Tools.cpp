@@ -704,6 +704,7 @@ void Tools::GetDesnInfo(int &j,CString Strings[])
 
 bool Tools::MemberCheck_EU(membercheck_rst &Rst)
 {
+	int m_kind = GlobalPara::m_Sect_in.m_kind;
 	int stru_class = GlobalPara::m_DesnPara.Struc_Class;
 	int exposure_class = GlobalPara::m_DesnPara.Exp_Class;
 	float Cmindur = Tools::GetCmindur_EURO(stru_class,exposure_class);
@@ -711,6 +712,7 @@ bool Tools::MemberCheck_EU(membercheck_rst &Rst)
 	Cdev = 10;
 	float Cmin = max(GlobalPara::m_Sect_in.Bar_d,max(Cmindur,10));
 	Cnom = Cmin+Cdev;
+	//保护层厚度检查
 	//y
 	Rst.PermitVal_lower[0] = Cnom;
 	Rst.PermitVal_upper[0] = 0.4*GlobalPara::m_Sect_in.Sect_b;

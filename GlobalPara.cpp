@@ -9,6 +9,7 @@
 bool GlobalPara::ExpertMode = false;
 DesnPara GlobalPara::m_DesnPara;
 SectDescribe GlobalPara::m_Sect_in;
+membercheck_rst GlobalPara::m_Rst;
 
 int GlobalPara::bard[bard_no];
 int GlobalPara::barmp[barmp_no];
