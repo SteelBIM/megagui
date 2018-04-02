@@ -712,26 +712,42 @@ bool Tools::MemberCheck_EU(membercheck_rst &Rst)
 	Cdev = 10;
 	float Cmin = max(GlobalPara::m_Sect_in.Bar_d,max(Cmindur,10));
 	Cnom = Cmin+Cdev;
+	int i=0;
 	//保护层厚度检查
 	//y
-	Rst.PermitVal_lower[0] = Cnom;
-	Rst.PermitVal_upper[0] = 0.4*GlobalPara::m_Sect_in.Sect_b;
-	Rst.CalVal[0] = GlobalPara::m_Sect_in.Con_coverd_x;
-	Tools::CompareVal(Rst,0);
+	Rst.PermitVal_lower[i] = Cnom;
+	Rst.PermitVal_upper[i] = 0.4*GlobalPara::m_Sect_in.Sect_b;
+	Rst.CalVal[i] = GlobalPara::m_Sect_in.Con_coverd_x;
+	Tools::CompareVal(Rst,i);
+	i++;
 
 	//z
-	Rst.PermitVal_lower[1] = min(40,min(Cnom,GlobalPara::m_Sect_in.HSect.B1/6));
-	Rst.PermitVal_upper[1] = 0.3*GlobalPara::m_Sect_in.Sect_h;
-	Rst.CalVal[1] = GlobalPara::m_Sect_in.Con_coverd_y;
-	Tools::CompareVal(Rst,1);
+	Rst.PermitVal_lower[i] = min(40,min(Cnom,GlobalPara::m_Sect_in.HSect.B1/6));
+	Rst.PermitVal_upper[i] = 0.3*GlobalPara::m_Sect_in.Sect_h;
+	Rst.CalVal[i] = GlobalPara::m_Sect_in.Con_coverd_y;
+	Tools::CompareVal(Rst,i);
+	i++;
+
+	Rst.PermitVal_lower[i] = 20;
+	Rst.PermitVal_upper[i] = 60;
+	Rst.CalVal[i] = GlobalPara::m_Sect_in.Concrete_mat;
+	Tools::CompareVal(Rst,i);
+	i++;
 
 	float hb_ratio = GlobalPara::m_Sect_in.Sect_h/GlobalPara::m_Sect_in.Sect_b;
-	if(hb_ratio>1)
-		hb_ratio = 1/hb_ratio;
-	Rst.PermitVal_lower[2] = 0.2;
-	Rst.PermitVal_upper[2] = 5.0;
-	Rst.CalVal[2] = hb_ratio;
-	Tools::CompareVal(Rst,2);
+//	if(hb_ratio>1)
+//		hb_ratio = 1/hb_ratio;
+	Rst.PermitVal_lower[i] = 0.2;
+	Rst.PermitVal_upper[i] = 5.0;
+	Rst.CalVal[i] = hb_ratio;
+	Tools::CompareVal(Rst,i);
+	i++;
+
+	float fy=Tools::GetProFy(GlobalPara::m_DesnPara.ProType,GlobalPara::m_Sect_in.HSect.RI,GlobalPara::m_DesnPara.ProLevel);
+	Rst.PermitVal_lower[i]=235;
+	Rst.PermitVal_upper[i]=460;
+	Rst.CalVal[i] = fy;
+	i++;
 
 // 	//型钢,无法考虑
 // 	float Pro_fy = m_Sectinfo.fy;
@@ -744,20 +760,24 @@ bool Tools::MemberCheck_EU(membercheck_rst &Rst)
 	//纵筋
 	double As,Asr,Ac,Ag;
 	GetSectA(As,Asr,Ac,Ag);
-	Rst.PermitVal_lower[3] = 0.3;
-	Rst.PermitVal_upper[3] = 6;
-	Rst.CalVal[3] = Asr*100/Ac;
-	Tools::CompareVal(Rst,3);
-	//最小纵筋数量无法校核
-	Rst.PermitVal_lower[4] = max(GlobalPara::m_Sect_in.Bar_d,max(GlobalPara::m_DesnPara.Dagg+5,20));
-	Rst.PermitVal_upper[4] = 10000;
-	Rst.CalVal[4] = GlobalPara::m_Sect_in.Bar_interval;
-	Tools::CompareVal(Rst,4);
+	Rst.PermitVal_lower[i] = 0.3;
+	Rst.PermitVal_upper[i] = 6;
+	Rst.CalVal[i] = Asr*100/Ac;
+	Tools::CompareVal(Rst,i);
+	i++;
 
-	Rst.PermitVal_lower[5] = 8;
-	Rst.PermitVal_upper[5] = 10000;
-	Rst.CalVal[5] = GlobalPara::m_Sect_in.Bar_d;
-	Tools::CompareVal(Rst,5);
+	//最小纵筋数量无法校核
+	Rst.PermitVal_lower[i] = max(GlobalPara::m_Sect_in.Bar_d,max(GlobalPara::m_DesnPara.Dagg+5,20));
+	Rst.PermitVal_upper[i] = 10000;
+	Rst.CalVal[i] = GlobalPara::m_Sect_in.Bar_interval;
+	Tools::CompareVal(Rst,i);
+	i++;
+
+	Rst.PermitVal_lower[i] = 8;
+	Rst.PermitVal_upper[i] = 10000;
+	Rst.CalVal[i] = GlobalPara::m_Sect_in.Bar_d;
+	Tools::CompareVal(Rst,i);
+	i++;
 
 	return true;
 }
@@ -874,4 +894,323 @@ void Tools::GetSectA(double &As,double &Asr,double &Ac,double &Ag)
 	}
 	Ac = Ag-As-Asr;
 
+}
+
+//写截面检查结果
+void Tools::WriteMemberCheckrst_EU(membercheck_rst &Rst)
+{
+	CFile m_file;
+	CString FileName("CheckInfo.txt");
+	m_file.Open(FileName,CFile::modeCreate|CFile::modeWrite);
+	m_file.SeekToBegin();
+	CString String[200];
+	int i=0;
+	int j=0;
+
+	//保护层检查
+	String[j++].Format(_T("A. Concrete: \r\n"));
+	String[j++].Format(_T("  1.Cover \r\n"));
+	//y-y
+	String[j++].Format(_T("  Cy=%g mm, The resonable range is %gmm~%gmm\r\n"),Rst.CalVal[i],Rst.PermitVal_lower[i],Rst.PermitVal_upper[i]);
+	if(Rst.ifOk[i]>0)
+		String[j++].Format(_T("  The check of this item is OK! \r\n"));
+	else
+		String[j++].Format(_T("  **** The check of this item is Not OK! \r\n"));
+	i++;
+	//z-z
+	String[j++].Format(_T("  Cz=%g mm, The resonable range is %gmm~%gmm\r\n"),Rst.CalVal[i],Rst.PermitVal_lower[i],Rst.PermitVal_upper[i]);
+	if(Rst.ifOk[i]>0)
+		String[j++].Format(_T("  The check of this item is OK! \r\n"));
+	else
+		String[j++].Format(_T("  **** The check of this item is Not OK! \r\n"));
+	i++;
+	//strength
+	String[j++].Format(_T(" \r 2.Strength \r\n"));
+	String[j++].Format(_T("  The concrete strength is %gMPa  The resonable range is between C20 and C60. \r\n"),Rst.CalVal[i]);
+	if(Rst.ifOk[i]>0)
+		String[j++].Format(_T("  The check of this item is OK! \r\n"));
+	else
+		String[j++].Format(_T("  **** The check of this item is Not OK! \r\n"));	
+	i++;
+
+	//h b ratio
+	String[j++].Format(_T("\r 2.The ratio of the cross-section depth h to width b \r\n"));
+	String[j++].Format(_T("  h1/h2=%g,The resonable range is 0.2~5.0."),Rst.CalVal[i]);
+	if(Rst.ifOk[i]>0)
+		String[j++].Format(_T("  The check of this item is OK! \r\n"));
+	else
+		String[j++].Format(_T("  **** The check of this item is Not OK! \r\n"));	
+	i++;
+	//strength
+	String[j++].Format(_T("\r\nB Steel profile: \r\n"));
+	String[j++].Format(_T(" 1.Strength \r\n"));
+	String[j++].Format(_T("  fy=%gMPa, The resonable range is S235 to S460. /r/n"));
+	if(Rst.ifOk[i]>0)
+		String[j++].Format(_T("  The check of this item is OK! \r\n"));
+	else
+		String[j++].Format(_T("  **** The check of this item is Not OK! \r\n"));	
+	i++;
+
+	String[j++].Format(_T("\r\nB Reinforcing bars: \r\n"));
+	String[j++].Format(_T(" 1.Longitudinal reinforcement ratio \r\n"));
+	String[j++].Format(_T("  Asr/Ac=%g%%,The resonable range is 0.30%~6.00% .\r\n"),Rst.CalVal[i]);
+	if(Rst.ifOk[i]>0)
+		String[j++].Format(_T("  The check of this item is OK! \r\n"));
+	else
+		String[j++].Format(_T("  **** The check of this item is Not OK! \r\n"));	
+	i++;
+
+	//钢筋数量特别处理
+	String[j++].Format(_T(" 2. Minimum number of longitudinal bars\r\n"));
+	String[j++].Format(_T("  For columns having a polygonal cross-section, at least one bar should be placed at each corner. \r\n"));
+	String[j++].Format(_T("  The check of this item is OK! \r\n"));
+
+
+	String[j++].Format(_T(" 3. Clear spacing between longitudinal bars\r\n"));
+	String[j++].Format(_T("  The clear distance (horizontal and vertical) between individual parallel bars or horizontal layers of parallel bars is %gmm  The minimum value is %gmm .\r\n"),Rst.CalVal[i],Rst.PermitVal_lower[i]);
+	if(Rst.ifOk[i]>0)
+		String[j++].Format(_T("  The check of this item is OK! \r\n"));
+	else
+		String[j++].Format(_T("  **** The check of this item is Not OK! \r\n"));	
+	i++;
+
+	String[j++].Format(_T(" 4. Minimum diameter of longitudinal bars\r\n"));
+	String[j++].Format(_T("  ds=%gmm  The minimum value is 8mm"),Rst.CalVal[i]);
+	if(Rst.ifOk[i]>0)
+		String[j++].Format(_T("  The check of this item is OK! \r\n"));
+	else
+		String[j++].Format(_T("  **** The check of this item is Not OK! \r\n"));	
+	i++;
+
+	for(int ii=0;ii<j;ii++){
+		int length=String[ii].GetLength();
+		m_file.Write(String[ii],length);
+	}
+
+	m_file.Flush();
+	m_file.Close();
+	ShellExecute(NULL,"open","CheckInfo.txt",NULL,NULL,SW_SHOWNORMAL);
+}
+
+float Tools::GetProFy(int ProType,float TT,int ProNo)
+{
+	float gamas = 1.f;
+	if(ProType>10){
+		ProType = ProType%10;
+		if(GlobalPara::m_DesnPara.CodeType==3)		//中国规范
+			gamas = 1.11;
+		else
+			gamas = 1;
+	}
+	float Fyy;
+	if(ProType==0){		//EN-10025
+		if((TT-16)<0.01){			//s355jr s460jr s500jo s355m s420m s460m s500m
+			if(ProNo==0)
+				Fyy = 355/gamas;
+			else if(ProNo==1)
+				Fyy = 460/gamas;
+			else if(ProNo==2)
+				Fyy = 500/gamas;
+			else if(ProNo==3)
+				Fyy = 355/gamas;
+			else if(ProNo==4)
+				Fyy = 420/gamas;
+			else if(ProNo==5)
+				Fyy = 460/gamas;
+			else if(ProNo==6)
+				Fyy = 500/gamas;
+			else 
+				Fyy = 355/gamas;
+		}
+		else if((TT-16)>0.01 && (TT-40)<0.01){
+			if(ProNo==0)
+				Fyy = 345/gamas;
+			else if(ProNo==1)
+				Fyy = 440/gamas;
+			else if(ProNo==2)
+				Fyy = 480/gamas;
+			else if(ProNo==3)
+				Fyy = 345/gamas;
+			else if(ProNo==4)
+				Fyy = 400/gamas;
+			else if(ProNo==5)
+				Fyy = 440/gamas;
+			else if(ProNo==6)
+				Fyy = 480/gamas;
+			else 
+				Fyy = 355/gamas;			
+		}
+		else if((TT-40)>0.01 && (TT-63)<0.01){
+			if(ProNo==0)
+				Fyy = 335/gamas;
+			else if(ProNo==1)
+				Fyy = 420/gamas;
+			else if(ProNo==2)
+				Fyy = 460/gamas;
+			else if(ProNo==3)
+				Fyy = 335/gamas;
+			else if(ProNo==4)
+				Fyy = 390/gamas;
+			else if(ProNo==5)
+				Fyy = 430/gamas;
+			else if(ProNo==6)
+				Fyy = 460/gamas;
+			else 
+				Fyy = 355/gamas;
+		}
+		else if((TT-63)>0.01 && (TT-80)<0.01){
+			if(ProNo==0)
+				Fyy = 325/gamas;
+			else if(ProNo==1)
+				Fyy = 400/gamas;
+			else if(ProNo==2)
+				Fyy = 450/gamas;
+			else if(ProNo==3)
+				Fyy = 325/gamas;
+			else if(ProNo==4)
+				Fyy = 380/gamas;
+			else if(ProNo==5)
+				Fyy = 410/gamas;
+			else if(ProNo==6)
+				Fyy = 450/gamas;
+			else 
+				Fyy = 355/gamas;
+		}
+		else if((TT-80)>0.01 && (TT-100)<0.01){
+			if(ProNo==0)
+				Fyy = 315/gamas;
+			else if(ProNo==1)
+				Fyy = 390/gamas;
+			else if(ProNo==2)
+				Fyy = 450/gamas;
+			else if(ProNo==3)
+				Fyy = 325/gamas;
+			else if(ProNo==4)
+				Fyy = 370/gamas;
+			else if(ProNo==5)
+				Fyy = 400/gamas;
+			else if(ProNo==6)
+				Fyy = 450/gamas;
+			else 
+				Fyy = 355/gamas;
+		}
+		else if((TT-100)>0.01 && (TT-150)<0.01){
+			if(ProNo==0)
+				Fyy = 295/gamas;
+			else if(ProNo==1)
+				Fyy = 390/gamas;
+			else if(ProNo==2)
+				Fyy = 450/gamas;
+			else if(ProNo==3)
+				Fyy = 320/gamas;
+			else if(ProNo==4)
+				Fyy = 365/gamas;
+			else if(ProNo==5)
+				Fyy = 385/gamas;
+			else if(ProNo==6)
+				Fyy = 450/gamas;
+			else 
+				Fyy = 355/gamas;
+		}		
+	}
+	else if(ProType==1){	//ETA-10/0156  HISTAR
+		if((TT-82)<0.01){
+			if(ProNo==0)
+				Fyy = 355/gamas;
+			else if(ProNo==1)
+				Fyy = 460/gamas;
+			else 
+				Fyy = 355/gamas;
+		}
+		else if((TT-82)>0.01 && (TT-125)<0.01){
+			if(ProNo==0)
+				Fyy = 355/gamas;
+			else if(ProNo==1)
+				Fyy = 450/gamas;
+			else 
+				Fyy = 355/gamas;
+		}
+		else if((TT-125)>0.01 && (TT-140)<0.01){
+			if(ProNo==0)
+				Fyy = 355/gamas;
+			else if(ProNo==1)
+				Fyy = 450/gamas;
+			else 
+				Fyy = 450/gamas;
+		}
+	}
+	else if(ProType==2){	//ASTM
+		if(ProNo==0)
+			Fyy = 345/gamas;
+		else if(ProNo==1)
+			Fyy = 450/gamas;
+		else if(ProNo==2)
+			Fyy = 485/gamas;
+		else if(ProNo==3)
+			Fyy = 550/gamas;
+	}
+	else if(ProType==3){	//chinese
+		if(TT<=16){
+			if(ProNo==0)		//Q235
+				Fyy = 235/gamas;
+			else if(ProNo==1)	//Q345
+				Fyy = 345/gamas;
+			else if(ProNo==2)	//Q345GJ
+				Fyy = 345/gamas;
+			else if(ProNo==3)	//Q390
+				Fyy = 390/gamas;
+			else if(ProNo==4)	//Q420
+				Fyy = 420/gamas;
+		}
+		else if(TT>16 && TT<=35){
+			if(ProNo==0)		//Q235
+				Fyy = 225/gamas;
+			else if(ProNo==1)	//Q345
+				Fyy = 335/gamas;
+			else if(ProNo==2)	//Q345GJ
+				Fyy = 345/gamas;
+			else if(ProNo==3)	//Q390
+				Fyy = 370/gamas;
+			else if(ProNo==4)	//Q420
+				Fyy = 400/gamas;
+		}
+		else if(TT>35 && TT<=50){
+			if(ProNo==0)		//Q235
+				Fyy = 215/gamas;
+			else if(ProNo==1)	//Q345
+				Fyy = 325/gamas;
+			else if(ProNo==2)	//Q345GJ
+				Fyy = 335/gamas;
+			else if(ProNo==3)	//Q390
+				Fyy = 350/gamas;
+			else if(ProNo==4)	//Q420
+				Fyy = 380/gamas;
+		}
+		else if(TT>50 && TT<=100){
+			if(ProNo==0)		//Q235
+				Fyy = 215/gamas;
+			else if(ProNo==1)	//Q345
+				Fyy = 315/gamas;
+			else if(ProNo==2)	//Q345GJ
+				Fyy = 325/gamas;
+			else if(ProNo==3)	//Q390
+				Fyy = 330/gamas;
+			else if(ProNo==4)	//Q420
+				Fyy = 360/gamas;
+		}
+		else{
+			if(ProNo==0)		//Q235
+				Fyy = 215/gamas;
+			else if(ProNo==1)	//Q345
+				Fyy = 315/gamas;
+			else if(ProNo==2)	//Q345GJ
+				Fyy = 325/gamas;
+			else if(ProNo==3)	//Q390
+				Fyy = 330/gamas;
+			else if(ProNo==4)	//Q420
+				Fyy = 360/gamas;
+		}
+	}
+
+	return Fyy;
 }

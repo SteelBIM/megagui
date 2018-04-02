@@ -37,11 +37,13 @@ public:
 		
 	static void CalProPoint(float E1,float E2,float m_fy,float m_fu);		//离散化型钢本构
 	static void AutoComb();		//如果没有走对话框，自动组合
+	static float GetProFy(int ProType,float TT,int ProNo);
 
 	//截面检查
 	static int  GetCmindur_EURO(int &stru_class,int &exposure_class);	//欧洲规范中获得耐久性要求最小保护层厚度
 	static void CompareVal(membercheck_rst &m_check,const int item_index,const bool checkval2=false);
 	static bool MemberCheck_EU(membercheck_rst &Rst);
+	static void WriteMemberCheckrst_EU(membercheck_rst &Rst);
 	static void GetSectA(double &As,double &Asr,double &Ac,double &Ag);
 };
 
